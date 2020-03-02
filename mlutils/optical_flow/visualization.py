@@ -4,7 +4,7 @@ from torch import Tensor
 from mlutils.graphics.color import hsv_to_rgb
 
 
-def flow2rgb(flow: Tensor, max_norm: float = 1., invert_y: bool = True):
+def flow2rgb(flow: Tensor, max_norm: float = 1., invert_y: bool = True) -> Tensor:
     """
     Map optical flow to color image.
     The color hue is determined by the angle to the X-axis and the norm of the flow determines the saturation.
