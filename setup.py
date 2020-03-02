@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mlutils',
-    version='0.0.3',
+    version='0.0.4',
     author='Adrian Wälchli',
     author_email='adrian.waelchli@inf.unibe.ch',
     scripts=[],
