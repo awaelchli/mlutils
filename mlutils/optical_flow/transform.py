@@ -5,13 +5,19 @@ from torch import Tensor
 from torch.nn import functional as F
 
 
-def warp(frame: Tensor, flow: Tensor) -> Tensor:
+def warp(
+        frame: Tensor,
+        flow: Tensor,
+        mode: str = 'bilinear',
+        padding_mode: str = 'border',
+        align_corners: bool = False
+) -> Tensor:
     """ Inverse warping with optical flow. """
     # frame: (B, C, H, W)
     # flow: (B, 2, H, W)
     flow = flow.permute(0, 2, 3, 1)  # swap flow dimensions (as expected by grid_sample)
     grid = warp_grid(flow)
-    warped = F.grid_sample(frame, grid, mode='bilinear', padding_mode='border')
+    warped = F.grid_sample(frame, grid, mode=mode, padding_mode=padding_mode, align_corners=align_corners)
     return warped
 
 
