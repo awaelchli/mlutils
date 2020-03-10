@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name='mlutils',
-    version='0.0.4',
+    version='0.0.5',
     author='Adrian Wälchli',
     author_email='adrian.waelchli@inf.unibe.ch',
     scripts=[],
     url='https://github.com/awaelchli/mlutils.git',
-    license='LICENSE.txt',
+    license='LICENSE.md',
     description='Machine Learning Utilities',
     long_description=open('README.md').read(),
     packages=find_packages(exclude=['tests']),
