@@ -18,6 +18,7 @@ def flow2rgb(flow: Tensor, max_norm: float = 1., invert_y: bool = True) -> Tenso
     Y axis pointing downwards. For intuitive visualization, the Y-axis is inverted.
     :return: Tensor of shape (B, 3, H, W)
     """
+    flow = flow.clone()
     # flow: (B, 2, H, W)
     if isinstance(flow, np.ndarray):
         flow = torch.as_tensor(flow)
