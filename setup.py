@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mlutils',
-    version='0.0.5',
+    version='0.0.6',
     author='Adrian Wälchli',
     author_email='adrian.waelchli@inf.unibe.ch',
     scripts=[],
@@ -16,6 +16,7 @@ setup(
         'torchvision>=0.4.0'
         'numpy>=1.18',
         'matplotlib>=3.1',
+        'scikit-image>=0.16.2',
         'Pillow==6.1',
         'pytest',
     ],
