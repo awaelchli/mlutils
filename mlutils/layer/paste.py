@@ -31,7 +31,8 @@ def paste(background: Tensor, patch: Tensor, x: LongTensor, y: LongTensor, mask:
         1.  The X- and Y-coordinates can exceed the range of the background image (negative and positive).
             The background will be dynamically padded and cropped again after pasting such that the
             contents can go over the borders of the background image.
-        2.  Currently only supports integer locations
+        2.  Currently it only supports integer locations.
+        3.  All tensors must be on the same device.
     """
     # background: (B, C, H, W)
     # patch, mask: (B, C, h, w)
@@ -39,12 +40,14 @@ def paste(background: Tensor, patch: Tensor, x: LongTensor, y: LongTensor, mask:
     b, c, H, W = background.shape
     _, _, h, w = patch.shape
     mask = torch.ones_like(patch) if mask is None else mask
+    device = background.device
     assert b == patch.size(0) == mask.size(0)
     assert b == x.size(0) == y.size(0)
     assert c == patch.size(1) == mask.size(1)
     assert h == mask.size(-2)
     assert w == mask.size(-1)
     assert 1 == x.ndimension() == y.ndimension()
+    assert device == patch.device == x.device == y.device == mask.device
 
     # dynamically pad background for patches that go over borders
     left = min(x.min().abs().item(), 0)
@@ -55,10 +58,10 @@ def paste(background: Tensor, patch: Tensor, x: LongTensor, y: LongTensor, mask:
 
     # generate indices
     gridb, gridc, gridy, gridx = torch.meshgrid(
-        torch.arange(b),
-        torch.arange(c),
-        torch.arange(h),
-        torch.arange(w)
+        torch.arange(b, device=device),
+        torch.arange(c, device=device),
+        torch.arange(h, device=device),
+        torch.arange(w, device=device)
     )
     x = x.view(b, 1, 1, 1).repeat(1, c, h, w)
     y = y.view(b, 1, 1, 1).repeat(1, c, h, w)
