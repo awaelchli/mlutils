@@ -48,6 +48,8 @@ def paste(background: Tensor, patch: Tensor, x: LongTensor, y: LongTensor, mask:
     assert w == mask.size(-1)
     assert 1 == x.ndimension() == y.ndimension()
     assert device == patch.device == x.device == y.device == mask.device
+    x = x.long()
+    y = y.long()
 
     # dynamically pad background for patches that go over borders
     left = min(x.min().abs().item(), 0)
