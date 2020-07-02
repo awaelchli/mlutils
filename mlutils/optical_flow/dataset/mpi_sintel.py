@@ -113,7 +113,7 @@ class MPISintel(Dataset, TransformationMixin):
     ):
         super().__init__()
         assert subset in ['training', 'test']
-        assert set(contents).issubset({'clean', 'final', 'flow', 'occlusion', 'invalid'})
+        assert set(contents).issubset({'clean', 'final', 'flow', 'occlusion', 'invalid', 'paths'})
         self.subset = subset
         self.contents = contents
         self.random_crop = random_crop
@@ -174,9 +174,10 @@ class MPISintel(Dataset, TransformationMixin):
 
     def __getitem__(self, item: int) -> Dict[str, Union[Tensor, Tuple[Tensor, Tensor]]]:
         files = self.index[item]
-
         sample = dict()
 
+        if 'paths' in self.contents:
+            sample['paths'] = files
         if 'clean' in self.contents:
             sample['clean'] = tuple(map(self.load_image, files['clean']))
         if 'final' in self.contents:
@@ -198,11 +199,12 @@ class MPISintel(Dataset, TransformationMixin):
 
 if __name__ == '__main__':
     data = MPISintel(
-        './data/MPI-Sintel',
+        '/home/adrian/Datasets/MPI-Sintel',
         subset='training',
-        contents=('clean', 'final', 'flow'),
+        contents=('clean', 'final', 'flow', 'paths'),
         sequences=['market_2'],
-        random_crop=False
+        random_crop=False,
     )
     print(data[0]['clean'][0].shape)
     print(len(data[0]))
+    print(data[0]['paths'])
