@@ -73,7 +73,8 @@ def paste(background: Tensor, patch: Tensor, x: LongTensor, y: LongTensor, mask:
     # we need to ignore negative indices, or pasted conent will be rolled to the other side
     mask = mask * (x >= 0) * (y >= 0)
     # paste
-    background[(gridb, gridc, y, x)] = mask * patch + (1 - mask) * background[(gridb, gridc, y, x)]
+    one = torch.tensor(1, dtype=mask.dtype)
+    background[(gridb, gridc, y, x)] = mask * patch + (one - mask) * background[(gridb, gridc, y, x)]
     # crop away the padded regions
     background = background[..., top:(top + H), left:(left + W)]
     return background
